@@ -1,0 +1,21 @@
+name: Validate PowerShell
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-validation:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned analyzer
+        shell: powershell
+        run: Install-Module PSScriptAnalyzer -RequiredVersion 1.24.0 -Scope CurrentUser -Force -Repository PSGallery
+      - name: Parse and analyze lab scripts
+        shell: powershell
+        run: .\windows-server-infrastructure-lab\tests\Test-StaticValidation.ps1

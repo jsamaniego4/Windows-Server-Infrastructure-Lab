@@ -1,15 +1,17 @@
 # Windows Server Infrastructure & Active Directory Automation Lab
 
+[Portfolio overview](../README.md) · [Deployment](docs/deployment.md) · [Validation](docs/validation.md) · [Resume entry](docs/resume.md)
+
 A reproducible, **self-directed** systems administration lab for demonstrating Windows Server, AD DS, DNS, DHCP, Group Policy, PowerShell automation, and disaster-recovery planning.
 
-> **Status: lab kit / not deployed.** The repository contains working scripts and documentation templates. Do not claim domain deployment, backups, or recovery tests until you perform and document them. Everything runs only in a personally owned, isolated VM lab.
+> **Status: lab kit / not deployed.** The repository contains provisioning scripts and operational runbooks. Do not claim domain deployment, backups, or recovery tests until you perform and document them. Everything runs only in a personally owned, isolated VM lab.
 
 ## What this project demonstrates
 
 - Domain controller provisioning for a fictional company (`corp.example.test`), with integrated DNS
 - DHCP configuration for an isolated, **internal-only** virtual network
 - Organizational Units, security groups, bulk user provisioning from CSV, and permission auditing
-- A scoped GPO starter baseline (screen lock and firewall settings)
+- A scoped GPO starter baseline (user screen-lock settings)
 - Backup / restore testing plan and operational runbooks
 - CI checks for PowerShell syntax and PSScriptAnalyzer linting
 
@@ -20,7 +22,7 @@ A reproducible, **self-directed** systems administration lab for demonstrating W
 | Host | OS / Role | Address (example only) |
 | --- | --- | --- |
 | DC01 | Windows Server 2022/2025 evaluation, AD DS / DNS / DHCP | 10.77.10.10 |
-| CLIENT01 | Windows 11 evaluation, domain joined | DHCP: 10.77.10.100–149 |
+| CLIENT01 | Windows 11 Pro/Enterprise evaluation, domain joined | DHCP: 10.77.10.100–149 |
 | Lab virtual switch | Hyper-V **internal** switch | 10.77.10.0/24 |
 
 The examples use an isolated IPv4 subnet. **Never run DHCP setup on a corporate, shared, bridged, or home production LAN.** The scripts check the default lab prefix and require opt-in for server provisioning.
@@ -29,7 +31,7 @@ The examples use an isolated IPv4 subnet. **Never run DHCP setup on a corporate,
 
 1. An isolated VM hypervisor (Hyper-V on supported Windows, or an equivalent); two evaluation VMs; adequate RAM / disk.
 2. Local Administrator rights on the new lab Windows Server VM.
-3. PowerShell 5.1 or 7 for most scripts, with **Windows PowerShell 5.1 required for server role / GroupPolicy cmdlets**.
+3. Windows PowerShell 5.1 for provisioning and validation on Windows; server role and GroupPolicy cmdlets require Windows.
 4. Take VM snapshots/checkpoints before making changes. Set a dedicated lab-only administrator password, and keep it out of the repository.
 
 ## Quick start (review every script first)
@@ -87,15 +89,11 @@ Add **your own** screenshots and redacted logs under `evidence/` after building.
 - [Backup and recovery exercise](docs/disaster-recovery.md)
 - [Troubleshooting notes template](docs/incident-template.md)
 
-## Resume bullets (ONLY AFTER executing and verifying)
+## Portfolio and validation
 
-- Built an isolated Windows Server Active Directory lab with integrated DNS, DHCP scopes, organizational units, security groups, and domain-joined clients.
-- Automated bulk identity provisioning, group assignment, and security audits using parameterized PowerShell scripts and CSV input validation.
-- Implemented workstation Group Policy settings and validated domain authentication, DNS resolution, and restore procedures in a controlled virtual environment.
+See [resume wording](docs/resume.md) for descriptions of current deliverables and completed-lab wording. Run [static validation](tests/README.md) before publishing changes; record live results separately in the [validation checklist](docs/validation.md).
 
-## Security and ethics
-
-This project must not be used on Leviton, school, or another organization's infrastructure without authorization. Never commit actual credentials, real user records, domain secrets, or unredacted security exports.
+Keep credentials, real identities, domain secrets, and raw audit exports out of Git. Place reviewed artifacts in `evidence/sanitized/`; raw evidence is ignored by default.
 
 ## License
 MIT.

@@ -1,0 +1,13 @@
+# Private runtime outputs; publish only reviewed, sanitized evidence.
+windows-server-infrastructure-lab/evidence/*
+!windows-server-infrastructure-lab/evidence/README.md
+!windows-server-infrastructure-lab/evidence/sanitized/
+*.evtx
+*.vhd
+*.vhdx
+*.avhdx
+*.bak
+.env
+.env.*
+!.env.example
+.DS_Store

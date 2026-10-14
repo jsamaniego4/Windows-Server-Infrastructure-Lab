@@ -16,12 +16,12 @@ foreach ($u in $rows) {
  if (-not $u.GivenName -or -not $u.Surname) { throw 'Missing name columns' }
 }
 # Password is never committed or echoed. Accounts remain disabled pending individual password reset and approval.
-$pwd=Read-Host 'Enter strong TEMPORARY password for disabled lab users' -AsSecureString
+$temporaryPassword=Read-Host 'Enter strong TEMPORARY password for disabled lab users' -AsSecureString
 foreach ($u in $rows) {
  $name=$u.SamAccountName
  if (Get-ADUser -Filter "SamAccountName -eq '$name'" -ErrorAction SilentlyContinue) { Write-Warning "Skipping existing user $name"; continue }
  if ($PSCmdlet.ShouldProcess($name,'Create disabled lab user')) {
-  New-ADUser -Name "$($u.GivenName) $($u.Surname)" -GivenName $u.GivenName -Surname $u.Surname -SamAccountName $name -UserPrincipalName "$name@corp.example.test" -Department $u.Department -Path "OU=LabUsers,$DomainDN" -AccountPassword $pwd -Enabled $false -ChangePasswordAtLogon $true
+  New-ADUser -Name "$($u.GivenName) $($u.Surname)" -GivenName $u.GivenName -Surname $u.Surname -SamAccountName $name -UserPrincipalName "$name@corp.example.test" -Department $u.Department -Path "OU=LabUsers,$DomainDN" -AccountPassword $temporaryPassword -Enabled $false -ChangePasswordAtLogon $true
   Add-ADGroupMember -Identity "GG-Lab-$($u.Department)" -Members $name
  }
 }
